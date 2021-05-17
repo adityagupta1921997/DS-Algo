@@ -1,9 +1,6 @@
 package BinaryTreePractice;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class BinaryTree001 {
 
@@ -304,6 +301,50 @@ public class BinaryTree001 {
     }
 
 
+    // Vertical Order traversal
+    private static void insertIntoMap(int data, int dist, HashMap<Integer, ArrayList<Integer>> map) {
+        map.putIfAbsent(dist, new ArrayList<>());
+        map.get(dist).add(data);
+    }
+
+    private static void verticalOrderTraversalHelper(Node node, int dist, HashMap<Integer, ArrayList<Integer>> map) {
+        if(node == null)
+            return;
+
+        insertIntoMap(node.data, dist, map);
+        verticalOrderTraversalHelper(node.left, dist-1, map);
+        verticalOrderTraversalHelper(node.right, dist+1, map);
+    }
+
+    private static HashMap<Integer, ArrayList<Integer>> verticalOrderTraversal(Node node) {
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+
+        verticalOrderTraversalHelper(node, 0, map);
+        for(int key: map.keySet()){
+            System.out.println(map.get(key));
+        }
+        return map;
+    }
+
+    private static void topViewOfBT(Node root) {
+        HashMap<Integer, ArrayList<Integer>> map = verticalOrderTraversal(root);
+        for(int key: map.keySet()){
+            System.out.print(map.get(key).get(0) + " ");
+        }
+    }
+
+    private static Node mirrorImageOfBT(Node node) {
+        if(node==null)
+            return null;
+        Node left = mirrorImageOfBT(node.left);
+        Node right = mirrorImageOfBT(node.right);
+
+        node.left = right;
+        node.right = left;
+        return node;
+    }
+
+
     public static void main(String[] args) {
         Integer[] arr = {50, 25, 12, null, null, 37, 30, null, null, null, 75, 62, null, 70, null, null, 87, null, null};
         Stack<Pair> stack = new Stack<>();
@@ -393,7 +434,15 @@ public class BinaryTree001 {
 //        isBalanced(root);
 //        System.out.println(isBal);
 
+//        verticalOrderTraversal(root);
+//        topViewOfBT(root);
+
+//        mirrorImageOfBT(root);
+        preOrder(root);
+
     }
+
+
 
 
 }
